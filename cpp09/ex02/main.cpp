@@ -12,13 +12,56 @@
 
 
 #include "PmergeMe.hpp"
+#include <climits>
+#include <ctime>
 
 int main(int argc, char ** argv)
 {
     if (argc <= 1)
     {
-        std::cerr << "Usage: ./PmergeMe <inegers devided by space>" << std::endl;
-        return 0;
+        std::cerr << "Usage: ./PmergeMe <integers devided by space>" << std::endl;
+        return 1;
     }
+    std::vector<int> numbers;
+    for (int i = 1; i < argc; i++)
+    {
+        char *end;
+        long num = std::strtol(argv[i], &end, 10);
+        if (*end != '\0' || num > INT_MAX)
+        {
+            std::cerr << "Error: not integer in parameters." << std::endl;
+            return 1;
+        }
+        if (num < 0)
+        {
+            std::cerr << "Error: negative number in parameters" << std::endl;
+            return 1;
+        }
+        numbers.push_back(static_cast<int>(num));
+    }
+
+    PmergeMe mergeme(numbers);
+
+    std::cout << "Before: ";
+    mergeme.printOriginal();
+
+    clock_t start = clock();
+    mergeme.sortVector();
+    clock_t end = clock();
+    double duration = (double(end-start) / CLOCKS_PER_SEC) * 1000000;
+    std::cout << "After: ";
+    mergeme.printSortedVector();
+    std::cout << "Time to process vector range of " << argc-1 << " elements: ";
+    std::cout <<  duration << " us" << std::endl;
+
+    start = clock();
+    mergeme.sortDeque();
+    end = clock();
+    duration = (double(end-start) / CLOCKS_PER_SEC) * 1000000;
+    std::cout << "Time to process deque range of " << argc-1 << " elements: ";
+    std::cout <<  duration << " us" << std::endl;
     
+
+    return 0;
 }
+
