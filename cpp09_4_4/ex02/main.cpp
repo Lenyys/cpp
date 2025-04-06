@@ -49,31 +49,41 @@ int main(int argc, char ** argv)
     clock_t end = clock();
     double duration = (double(end-start) / CLOCKS_PER_SEC) * 1000000;
     std::cout << "After: ";
-    mergeme.printSortedVector();
+    // mergeme.printSortedVector();
     std::cout << "Time to process vector range of " << argc-1 << " elements: ";
     std::cout <<  duration << " us" << std::endl;
-
+    
+    start = clock();
+    mergeme.sortDeque();
+    end = clock();
+    duration = (double(end-start) / CLOCKS_PER_SEC) * 1000000;
+    // std::cout << "After: ";
+    // mergeme.printSortedDeque();
+    std::cout << "Time to process deque range of " << argc-1 << " elements: ";
+    std::cout <<  duration << " us" << std::endl;
     
     // PmergeMe mergeme(numbers);
 
     // std::cout << "Before: ";
     // mergeme.printOriginal();
 
-    // clock_t start = clock();
-    // mergeme.sortVector();
-    // clock_t end = clock();
-    // double duration = (double(end-start) / CLOCKS_PER_SEC) * 1000000;
+    start = clock();
+    mergeme.sortVector1();
+    end = clock();
+    duration = (double(end-start) / CLOCKS_PER_SEC) * 1000000;
     // std::cout << "After: ";
     // mergeme.printSortedVector();
-    // std::cout << "Time to process vector range of " << argc-1 << " elements: ";
-    // std::cout <<  duration << " us" << std::endl;
+    std::cout << "Time to process vector range of " << argc-1 << " elements: ";
+    std::cout <<  duration << " us" << std::endl;
 
-    // start = clock();
-    // mergeme.sortDeque();
-    // end = clock();
-    // duration = (double(end-start) / CLOCKS_PER_SEC) * 1000000;
-    // std::cout << "Time to process deque range of " << argc-1 << " elements: ";
-    // std::cout <<  duration << " us" << std::endl;
+    start = clock();
+    mergeme.sortDeque1();
+    end = clock();
+    duration = (double(end-start) / CLOCKS_PER_SEC) * 1000000;
+    // std::cout << "After: ";
+    // mergeme.printSortedDeque();
+    std::cout << "Time to process deque range of " << argc-1 << " elements: ";
+    std::cout <<  duration << " us" << std::endl;
     
 
     return 0;

@@ -68,6 +68,7 @@ void PmergeMe::sortVector1()
     mergeInsertSortVector(sortedVector);
 }
 
+
 void PmergeMe::mergeInsertSortVector(std::vector<int> &vec)
 {
     if (vec.size() < 2)
@@ -120,6 +121,8 @@ void PmergeMe::mergeInsertSortDeque(std::deque<int> &deq)
     }
 }
 
+
+/////////////////////////////////////////////////////////////////////////////////////
 void PmergeMe::sortVector()
 {
     sortedVector = originalVector;
@@ -133,28 +136,24 @@ void PmergeMe::sortVector()
 
 void PmergeMe::insort_part(std::vector<int>& num, size_t j)
 {
-    std::vector<int> help, pending;
-    help.insert(help.end(), num.begin(), num.begin() + 2);
-    size_t i1 = 2;
-    for (size_t i= 2; i+2 <= j; i+=2)
+    std::vector<int> help, pending, pend;
+    for (size_t i= 0; i+2 <= j; i+=2)
     {
         pending.insert(pending.end(), num.begin() + i, num.begin() + i + 1);
         help.insert(help.end(), num.begin() + i + 1, num.begin() + i + 2);
-        i1 = i+2;
     }
-    if (num.size() > i1) 
-        pending.insert(pending.end(), num.begin() + i1, num.end());
-    
+    if (num.size() > j) 
+        pend.insert(pend.end(), num.begin() + j, num.end());
     num.clear();
     for (int n = 0; n < 3 && help.size(); n++)
     {
         num.insert(num.end(), help.begin(), help.begin() + 1);
         help.erase(help.begin());
     }
-    for (size_t i = 1; i < pending.size(); i++)
+    for (size_t i = 1; i < pending.size()+i; i++)
     {
         int jackob = pow(2,i);
-        for(size_t a = jackob; a > 0 && pending.size(); a--)
+        for(size_t a = jackob; a > 0 && !pending.empty(); a--)
         {
             if (pending.size() < a)
                 a = pending.size();
@@ -168,6 +167,13 @@ void PmergeMe::insort_part(std::vector<int>& num, size_t j)
             help.erase(help.begin());
         }
     } 
+    while(!pend.empty())
+    {
+        std::vector<int>::iterator pos = std::lower_bound(num.begin(), num.end(), pend[0]);
+        num.insert(pos, pend[0]);
+        pend.erase(pend.begin());
+    }
+    
 }
 
 void PmergeMe::merge_1_part(std::vector<int>& num, size_t j) {
@@ -193,40 +199,34 @@ void PmergeMe::merge_1_part(std::vector<int>& num, size_t j) {
 }
 
 void PmergeMe::merge_2_part(std::vector<int>& num, size_t j) {
-    if (j <= 2) {
+    if (j <= 2) 
         return;  
-    }
-
     std::vector<int> help, pend, pending_help;
     std::vector<std::vector<int> > pending;  
-
     help.insert(help.end(), num.begin(), num.begin() + j);
     for (size_t i = j; i + j <= num.size(); i += j) {
-        pending.push_back(std::vector<int>(num.begin() + i, num.begin() + i + j / 2));
-        help.insert(help.end(), num.begin() + i + j / 2, num.begin() + i + j);
+        pending.push_back(std::vector<int>(num.begin() + i , num.begin() + i + j/2));
+        help.insert(help.end(), num.begin() + i+ j/2, num.begin() + i + j);
     }
-
-    if (num.size() % j != 0) {
+    if (num.size() % j != 0)
         pend.insert(pend.end(), num.begin() + (num.size() - (num.size() % j)), num.end());
-    }
-    size_t k = help.size() - 1;
-    { 
-        for (size_t i = pending.size() - 1; i < pending.size(); --i) {
-            while (k > 0 && help[k] > pending.back().back()) {
-                k -= j / 2;
-            }
-            pending_help = pending.back();
-            pending.pop_back();    
-            help.insert(help.begin() + k + 1, pending_help.begin(), pending_help.end());
+    for (size_t i = pending.size() - 1; i != size_t(-1); i-= j/2) {
+        if (pending.empty())
+            break;
+        int k = help.size() - 1;
+        while (k > 0 && help[k] > pending.back().back()) {
+            k -= j / 2;
         }
+        if (k == 0 && help[k] > pending.back().back())
+            k = -1;
+        pending_help = pending.back();
+        pending.pop_back();    
+        help.insert(help.begin() + k + 1, pending_help.begin(), pending_help.end());
     }
     merge_2_part(help, j / 2);
     help.insert(help.end(), pend.begin(), pend.end());
     num = help;
 }
-
-
-
 
 void PmergeMe::sortDeque()
 {
@@ -241,28 +241,24 @@ void PmergeMe::sortDeque()
 
 void PmergeMe::insort_part_d(std::deque<int>& num, size_t j)
 {
-    std::deque<int> help, pending;
-    help.insert(help.end(), num.begin(), num.begin() + 2);
-    size_t i1 = 2;
-    for (size_t i= 2; i+2 <= j; i+=2)
+    std::deque<int> help, pending, pend;
+    for (size_t i= 0; i+2 <= j; i+=2)
     {
         pending.insert(pending.end(), num.begin() + i, num.begin() + i + 1);
         help.insert(help.end(), num.begin() + i + 1, num.begin() + i + 2);
-        i1 = i+2;
     }
-    if (num.size() > i1) 
-        pending.insert(pending.end(), num.begin() + i1, num.end());
-    
+    if (num.size() > j) 
+        pend.insert(pend.end(), num.begin() + j, num.end());
     num.clear();
     for (int n = 0; n < 3 && help.size(); n++)
     {
         num.insert(num.end(), help.begin(), help.begin() + 1);
         help.erase(help.begin());
     }
-    for (size_t i = 1; i < pending.size(); i++)
+    for (size_t i = 1; i < pending.size()+i; i++)
     {
         int jackob = pow(2,i);
-        for(size_t a = jackob; a > 0 && pending.size(); a--)
+        for(size_t a = jackob; a > 0 && !pending.empty(); a--)
         {
             if (pending.size() < a)
                 a = pending.size();
@@ -276,6 +272,13 @@ void PmergeMe::insort_part_d(std::deque<int>& num, size_t j)
             help.erase(help.begin());
         }
     } 
+    while(!pend.empty())
+    {
+        std::deque<int>::iterator pos = std::lower_bound(num.begin(), num.end(), pend[0]);
+        num.insert(pos, pend[0]);
+        pend.erase(pend.begin());
+    }
+    
 }
 
 void PmergeMe::merge_1_part_d(std::deque<int>& num, size_t j) {
@@ -301,32 +304,29 @@ void PmergeMe::merge_1_part_d(std::deque<int>& num, size_t j) {
 }
 
 void PmergeMe::merge_2_part_d(std::deque<int>& num, size_t j) {
-    if (j <= 2) {
+    if (j <= 2) 
         return;  
-    }
-
     std::deque<int> help, pend, pending_help;
     std::deque<std::deque<int> > pending;  
-
     help.insert(help.end(), num.begin(), num.begin() + j);
     for (size_t i = j; i + j <= num.size(); i += j) {
-        pending.push_back(std::deque<int>(num.begin() + i, num.begin() + i + j / 2));
-        help.insert(help.end(), num.begin() + i + j / 2, num.begin() + i + j);
+        pending.push_back(std::deque<int>(num.begin() + i , num.begin() + i + j/2));
+        help.insert(help.end(), num.begin() + i+ j/2, num.begin() + i + j);
     }
-
-    if (num.size() % j != 0) {
+    if (num.size() % j != 0)
         pend.insert(pend.end(), num.begin() + (num.size() - (num.size() % j)), num.end());
-    }
-    size_t k = help.size() - 1;
-    { 
-        for (size_t i = pending.size() - 1; i < pending.size(); --i) {
-            while (k > 0 && help[k] > pending.back().back()) {
-                k -= j / 2;
-            }
-            pending_help = pending.back();
-            pending.pop_back();    
-            help.insert(help.begin() + k + 1, pending_help.begin(), pending_help.end());
+    for (size_t i = pending.size() - 1; i != size_t(-1); i-= j/2) {
+        if (pending.empty())
+            break;
+        int k = help.size() - 1;
+        while (k > 0 && help[k] > pending.back().back()) {
+            k -= j / 2;
         }
+        if (k == 0 && help[k] > pending.back().back())
+            k = -1;
+        pending_help = pending.back();
+        pending.pop_back();   
+        help.insert(help.begin() + k + 1, pending_help.begin(), pending_help.end());
     }
     merge_2_part_d(help, j / 2);
     help.insert(help.end(), pend.begin(), pend.end());
