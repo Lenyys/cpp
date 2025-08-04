@@ -6,7 +6,7 @@
 /*   By: lmaresov <lmaresov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 08:36:23 by lmaresov          #+#    #+#             */
-/*   Updated: 2025/06/28 08:01:28 by lmaresov         ###   ########.fr       */
+/*   Updated: 2025/08/04 11:51:27 by lmaresov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ int main(int argc, char ** argv)
     std::cout << "Time to process deque range of " << argc-1 << " elements: ";
     std::cout <<  duration << " us" << std::endl;
 
-    
     return 0;
 }
 
