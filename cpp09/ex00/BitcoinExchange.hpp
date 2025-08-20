@@ -37,6 +37,8 @@ class  BitcoinExchange
         void loadDatabase(const std::string &filename);
         double getClosestRate(const std::string &date) const;
         void processFile(const std::string &filename);
+        bool isLeapYear(int year);
+        bool isValidDate(const std::string& date);
 };
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   BitcoinExchange.cpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmaresov <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: lmaresov <lmaresov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 11:38:45 by lmaresov          #+#    #+#             */
-/*   Updated: 2025/03/08 11:38:47 by lmaresov         ###   ########.fr       */
+/*   Updated: 2025/08/14 12:51:23 by lmaresov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,18 @@ void BitcoinExchange::processFile(const std::string &filename)
     }
     std::string line, date;
     double value;
-    std::getline(file, line);
-    while(std::getline(file, line))
+    if (!std::getline(file, line))
     {
+        std::cerr << "Error: empty input file." << std::endl;
+        return ;
+    }
+    while(std::getline(file, line))
+    {   
+        if (line.find('|') == std::string::npos)
+        {
+            std::cerr << "Error: invalid input." << std::endl;
+                continue;
+        }
         std::replace(line.begin(), line.end(), '|', ' ');
         std::istringstream stream(line);
         if (stream >> date >> value)
@@ -91,7 +100,12 @@ void BitcoinExchange::processFile(const std::string &filename)
             }
             else if(value > 1000)
             {
-                std::cerr << "Error: too large a number." << std::endl;
+                std::cerr << "Error: too large number." << std::endl;
+                continue;
+            }
+            else if(!isValidDate(date))
+            {
+                std::cerr << "Error: invalid date." << std::endl;
                 continue;
             }
             double rate = getClosestRate(date);
@@ -107,4 +121,29 @@ void BitcoinExchange::processFile(const std::string &filename)
             std::cerr << "Error: bad input -> " << line << std::endl;
         }
     }
+}
+
+bool BitcoinExchange::isLeapYear(int year)
+{
+    return (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0));
+}
+
+bool BitcoinExchange::isValidDate(const std::string& date)
+{
+    int daysInMonth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    if (date.length() != 10)
+        return false;
+    if (date[4] != '-' || date[7] != '-')
+        return false;
+    int year = atoi(date.substr(0,4).c_str());
+    int month = atoi(date.substr(5,2).c_str());
+    int day = atoi(date.substr(8,2).c_str());
+
+    if (year < 0 || month < 1 || month > 12 || day < 1)
+        return false;
+    if (month == 2 && isLeapYear(year))
+        daysInMonth[1] = 29;
+    if (day > daysInMonth[month -1])
+        return false;
+    return true;
 }

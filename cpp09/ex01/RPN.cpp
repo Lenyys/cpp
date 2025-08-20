@@ -13,7 +13,6 @@
 
 #include "RPN.hpp"
 
-
 int RPN::doOperation(int a, int b, const std::string &op)
 {
     if (op == "+")
@@ -23,19 +22,7 @@ int RPN::doOperation(int a, int b, const std::string &op)
     else if (op == "*")
         return a * b;
     else if (op == "/")
-    {
-        if (b == 0)
-        {
-            std::cerr << "Error: division by 0" << std::endl;
-            exit(1);
-        }
         return a / b;
-    }
-    else
-    {
-        std::cerr << "Error: unknown operator" << std::endl;
-        exit(1);
-    }
     return 0;
 }
 
@@ -83,13 +70,18 @@ void RPN::doTheMath(const std::string & expression)
             stack.pop();
             int a = stack.top();
             stack.pop();
+            if (token == "/" && b == 0)
+            {
+                std::cerr << "Error: division by 0" << std::endl;
+                return ;
+            } 
             int operationResult = doOperation(a, b, token);
             stack.push(operationResult);
         }
         else
         {
             std::cerr << "Error: invalid expresion" << std::endl;
-            return;
+            return ;
         }
     }
     if (stack.size() != 1)

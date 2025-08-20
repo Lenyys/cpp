@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmaresov <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: lmaresov <lmaresov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 08:36:23 by lmaresov          #+#    #+#             */
-/*   Updated: 2025/03/21 08:36:25 by lmaresov         ###   ########.fr       */
+/*   Updated: 2025/08/16 14:55:26 by lmaresov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,28 +40,28 @@ int main(int argc, char ** argv)
         numbers.push_back(static_cast<int>(num));
     }
 
-    PmergeMe mergeme(numbers);
+    PmergeMe sorter(numbers);
 
     std::cout << "Before: ";
-    mergeme.printOriginal();
-
+    sorter.printOriginal();
     clock_t start = clock();
-    mergeme.sortVector();
+    sorter.sortVector();
     clock_t end = clock();
     double duration = (double(end-start) / CLOCKS_PER_SEC) * 1000000;
     std::cout << "After: ";
-    mergeme.printSortedVector();
+    sorter.printSortedVector();
     std::cout << "Time to process vector range of " << argc-1 << " elements: ";
     std::cout <<  duration << " us" << std::endl;
+    
 
+    PmergeMe sorterd(numbers);
     start = clock();
-    mergeme.sortDeque();
+    sorterd.sortDeque();
     end = clock();
     duration = (double(end-start) / CLOCKS_PER_SEC) * 1000000;
     std::cout << "Time to process deque range of " << argc-1 << " elements: ";
     std::cout <<  duration << " us" << std::endl;
-    
-
+    sorterd.printSortedDeque();
     return 0;
 }
 

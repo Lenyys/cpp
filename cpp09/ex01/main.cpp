@@ -19,9 +19,7 @@ int main (int argc, char ** argv)
         std::cerr << "Usage: ./RPN \"expression\" " << std::endl;
         return 0; 
     }
-    // std::string  expression = argv[1];
     RPN calculator;
-    // calculator.doTheMath(expression);
     calculator.doTheMath(argv[1]);
 
     return 0;

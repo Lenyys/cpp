@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmaresov <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: lmaresov <lmaresov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 11:42:51 by lmaresov          #+#    #+#             */
-/*   Updated: 2025/03/08 11:42:52 by lmaresov         ###   ########.fr       */
+/*   Updated: 2025/08/16 14:29:56 by lmaresov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int main(int argc, char **argv)
     }
     std::string filename = argv[1];
 
-    BitcoinExchange bitcoin("data.csv");
+    BitcoinExchange bitcoin("data2.csv");
     bitcoin.processFile(filename);
 
     return 0;

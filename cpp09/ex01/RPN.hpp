@@ -27,17 +27,13 @@ class RPN
         int doOperation(int a, int b, const std::string &op);
         bool isOperator(const std::string & str);
         bool isNumber(const std::string & str);
-
+        
     public:
         RPN();
         RPN(const RPN & other);
         RPN &operator=(const RPN & other);
         ~RPN();
         void doTheMath(const std::string & expression);
-        
-
-
 };
-
 
 #endif
